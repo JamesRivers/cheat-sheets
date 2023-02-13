@@ -1,7 +1,7 @@
 # AWS CLI Cheat Sheet
 # Randome collection of commands I have needed to use
 # https://docs.aws.amazon.com/cli/latest/reference/
-
+# https://docs.aws.amazon.com/cli/latest/reference/ec2/index.htm
 # Create a ec2 key Pair
 aws ec2 create-key-pair --key-name 2302-academy-aviator-key --query 'KeyMaterial' --output text > 2302-academy-aviator.pem
 
