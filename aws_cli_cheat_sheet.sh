@@ -40,3 +40,9 @@ aws iam update-assume-role-policy --role-name ic-bastion-role-academy-aviator-23
 aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,InstanceType,State.Name,PrivateIpAddress,PublicIpAddress,KeyName,LaunchTime,Tags[?Key==`Name`].Value[]]' --output table
 # Show AWS Instances with Environment Tag
 aws ec2 describe-instances --filters "Name=tag:Environment,Values=training" --query 'Reservations[*].Instances[*].[InstanceId,InstanceType,State.Name,PrivateIpAddress,PublicIpAddress,KeyName,LaunchTime,Tags[?Key==`Name`].Value[]]' --output table
+
+# AWS show domains for Route53
+aws route53 list-hosted-zones --query 'HostedZones[*].Name' --output table
+
+# AWS show host zone id for a domain
+aws route53 list-hosted-zones --query 'HostedZones[?Name==`imagineacademy.tv.`].Id' --output text
