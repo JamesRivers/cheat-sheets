@@ -1,9 +1,12 @@
 # AWS CLI Cheat Sheet
-# Randome collection of commands I have needed to use
+# Random collection of commands I have needed to use
 # https://docs.aws.amazon.com/cli/latest/reference/
 # https://docs.aws.amazon.com/cli/latest/reference/ec2/index.htm
 # Create a ec2 key Pair
 aws ec2 create-key-pair --key-name 2302-academy-aviator-key --query 'KeyMaterial' --output text > 2302-academy-aviator.pem
+
+# AWS show keypairs
+aws ec2 describ/-key-pairs --query 'KeyPairs[*].KeyName' --output table
 
 # Create an ec2 key pair and download it.
 aws ec2 create-key-pair --key-name 2302-academy-aviator --query 'KeyMaterial' --output text > 2302-academy-aviator.pem && chmod 400 2302-academy-aviator.pem
@@ -46,3 +49,30 @@ aws route53 list-hosted-zones --query 'HostedZones[*].Name' --output table
 
 # AWS show host zone id for a domain
 aws route53 list-hosted-zones --query 'HostedZones[?Name==`imagineacademy.tv.`].Id' --output text
+
+# AWS show Media Convert endpoints
+aws mediaconvert describe-endpoints --query 'Endpoints[*].Url' --output table
+
+# AWS Show profiles 
+aws configure list-profiles
+
+# AWS Show VPCs
+aws ec2 describe-vpcs --query 'Vpcs[*].VpcId' --output table
+
+# AWS Show VPC names and IDs
+aws ec2 describe-vpcs --query 'Vpcs[*].[VpcId,Tags[?Key==`Name`].Value[]]' --output table
+
+# AWS show subnets and network ACLs for a VPC
+aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-05304c8001fe00777" --query 'Subnets[*].[SubnetId,Tags[?Key==`Name`].Value[],NetworkAclAssociationSet[0].NetworkAclId]' --output table
+
+# AWS show subnet addresses for a VPC
+aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-05304c8001fe00777" --query 'Subnets[*].[SubnetId,Tags[?Key==`Name`].Value[],CidrBlock]' --output table
+
+# AWS show s3 buckets
+aws s3 ls
+
+# AWS Show dynamoDB tables
+aws dynamodb list-tables --query 'TableNames[*]' --output table
+
+# AWS delete dynamoDB table
+aws dynamodb delete-table --table-name ic-2302-academy-aviator
