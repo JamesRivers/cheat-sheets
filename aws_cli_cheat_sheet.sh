@@ -16,7 +16,15 @@ aws ec2 create-key-pair --key-name 2302-academy-aviator --query 'KeyMaterial' --
 # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html
 aws ec2 describe-images --owners self
 aws ec2 describe-images --executable-users self 
-
+# AWS show tag value for ami   
+aws ec2 describe-images --image-ids ami-0a0a0a0a0a0a0a0a0 --query 'Images[*].Tags[?Key==`Name`].Value[]' --output text
+# AWS show all tag names for an ami
+aws ec2 describe-images --image-ids ami-0a0a0a0a0a0a0a0a0 --query 'Images[*].Tags[*].Key' --output text
+#AWS set new tag name and value for an ami
+aws ec2 create-tags --resources ami-0a0a0a0a0a0a0a0a0 --tags Key=Name,Value=2302-academy-aviator-ami
+# AWS show tags and values for an ami
+aws ec2 describe-images --image-ids ami-0a0a0a0a0a0a0a0a0 --query 'Images[*].Tags[*].[Key,Value]' --output table
+# AWS copy ami to another account and preserver the ami tags
 # Delete AWS eni network interface
 aws ec2 delete-network-interface --network-interface-id eni1a0a0a0a0a0a0a0a0
 
