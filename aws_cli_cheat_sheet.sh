@@ -15,7 +15,9 @@ aws ec2 create-key-pair --key-name 2302-academy-aviator --query 'KeyMaterial' --
 # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html
 # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html
 aws ec2 describe-images --owners self
-aws ec2 describe-images --executable-users self 
+aws ec2 describe-images --executable-users self --output table
+## Check AMI Images excuetable by self and only show names
+aws ec2 describe-images --executable-users self --query 'Images[*].Name' --output table
 # AWS show tag value for ami   
 aws ec2 describe-images --image-ids ami-0a0a0a0a0a0a0a0a0 --query 'Images[*].Tags[?Key==`Name`].Value[]' --output text
 # AWS show all tag names for an ami
