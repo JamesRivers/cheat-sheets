@@ -6,7 +6,7 @@
 aws ec2 create-key-pair --key-name 2302-academy-aviator-key --query 'KeyMaterial' --output text > 2302-academy-aviator.pem
 
 # AWS show keypairs
-aws ec2 describ/-key-pairs --query 'KeyPairs[*].KeyName' --output table
+aws ec2 describe-key-pairs --query 'KeyPairs[*].KeyName' --output table
 
 # Create an ec2 key pair and download it.
 aws ec2 create-key-pair --key-name 2302-academy-aviator --query 'KeyMaterial' --output text > 2302-academy-aviator.pem && chmod 400 2302-academy-aviator.pem
@@ -16,16 +16,29 @@ aws ec2 create-key-pair --key-name 2302-academy-aviator --query 'KeyMaterial' --
 # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html
 aws ec2 describe-images --owners self
 aws ec2 describe-images --executable-users self --output table
+
 ## Check AMI Images excuetable by self and only show names
 aws ec2 describe-images --executable-users self --query 'Images[*].Name' --output table
+
+## AWS Check AMI Images excuetable by self and only show names and ids
+aws ec2 describe-images --executable-users self --query 'Images[*].[ImageId,Name]' --output table
+
 # AWS show tag value for ami   
 aws ec2 describe-images --image-ids ami-0a0a0a0a0a0a0a0a0 --query 'Images[*].Tags[?Key==`Name`].Value[]' --output text
+
+## AWS show tag values for multiple amis show table for each ami
+aws ec2 describe-images --image-ids ami-0a0a0a0a0a0a0a0a0 ami-0b0b0b0b0b0b0b0b0b --query 'Images[*].Tags[?Key==`Name`].Value[]' --output table
+
+
 # AWS show all tag names for an ami
 aws ec2 describe-images --image-ids ami-0a0a0a0a0a0a0a0a0 --query 'Images[*].Tags[*].Key' --output text
+
 #AWS set new tag name and value for an ami
 aws ec2 create-tags --resources ami-0a0a0a0a0a0a0a0a0 --tags Key=Name,Value=2302-academy-aviator-ami
+
 # AWS show tags and values for an ami
 aws ec2 describe-images --image-ids ami-0a0a0a0a0a0a0a0a0 --query 'Images[*].Tags[*].[Key,Value]' --output table
+
 # AWS copy ami to another account and preserver the ami tags
 # Delete AWS eni network interface
 aws ec2 delete-network-interface --network-interface-id eni1a0a0a0a0a0a0a0a0
@@ -72,6 +85,15 @@ aws ec2 describe-vpcs --query 'Vpcs[*].VpcId' --output table
 # AWS Show VPC names and IDs
 aws ec2 describe-vpcs --query 'Vpcs[*].[VpcId,Tags[?Key==`Name`].Value[]]' --output table
 
+# AWS remove VPC
+aws ec2 delete-vpc --vpc-id vpc-05304c8001fe00777
+# AWS delete VPC with dependencies
+aws ec2 delete-vpc --vpc-id vpc-05304c8001fe00777 --cascade     
+
+
+# AWS Show VPC dependencies
+aws ec2 describe-vpc-attribute --vpc-id vpc-05304c8001fe00777 --attribute enableDnsHostnames --output table
+
 # AWS show subnets and network ACLs for a VPC
 aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-05304c8001fe00777" --query 'Subnets[*].[SubnetId,Tags[?Key==`Name`].Value[],NetworkAclAssociationSet[0].NetworkAclId]' --output table
 
@@ -80,6 +102,15 @@ aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-05304c8001fe00777" --
 
 # AWS show s3 buckets
 aws s3 ls
+
+# AWS S3 Destroy Bucket
+aws s3 rb s3://ic-2302-academy-aviator --force
+# AWS S3 delete bucket is not empty, The bucket you tried to delete is not empty. You must delete all versions in the bucket.
+# You must delete all versions in the bucket
+aws s3 rm s3://ic-2302-academy-aviator --recursive
+# Delete bucket
+aws s3 rb s3://ic-2302-academy-aviator --force
+aws s3 rb s3://ic-2302-academy-aviator --force --region us-east-1
 
 # AWS Show dynamoDB tables
 aws dynamodb list-tables --query 'TableNames[*]' --output table
