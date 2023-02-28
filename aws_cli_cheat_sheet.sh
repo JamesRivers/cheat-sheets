@@ -123,3 +123,14 @@ aws dynamodb list-tables --query 'TableNames[*]' --output table
 
 # AWS delete dynamoDB table
 aws dynamodb delete-table --table-name ic-2302-academy-aviator
+
+### Aviator Deployment Commands
+# AWS show deployed VPCA
+# AWS show all  VPC ID and Name
+aws ec2 describe-vpcs --query 'Vpcs[*].[VpcId,Tags[?Key==`Name`].Value[]]' --output table
+aws ec2 describe-vpcs --filters "Name=tag:Name,Values=academy2302b" --query 'Vpcs[*].VpcId' --output text
+## AWS show all subnet and acl for a VPC
+aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-06651086810c3bf1e" --query 'Subnets[*].[SubnetId,Tags[?Key==`Name`].Value[],NetworkAclAssociationSet[0].NetworkAclId]' --output tabl
+## AWS show all subnet and acl foan not find suitable configuration of distributed configuration store\nAvailable implementations: consul
+#
+
